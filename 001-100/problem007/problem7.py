@@ -9,6 +9,6 @@ def nth_prime(n):
         number += 2
     return primes[-1]
 
-print('The {}-th prime is: {}'.format(6,nth_prime(6)))
+# print('The {}-th prime is: {}'.format(6,nth_prime(6)))
 print('The {}-th prime is: {}'.format(10001,nth_prime(10001)))
 
