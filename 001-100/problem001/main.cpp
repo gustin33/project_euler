@@ -8,7 +8,7 @@ int main() {
             sum += k;
         }
     }
-    cout << sum;
+    printf("%d\n", sum);
     return 0;
 }
 

@@ -27,7 +27,7 @@ int summation_of_primes(int n) {
 }
 
 int main () {
-  long int n = 2*10^6;
+  long int n = 2E6;
   std::cout << summation_of_primes(n)<<std::endl;
   return 0;
 }

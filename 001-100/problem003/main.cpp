@@ -11,6 +11,6 @@ int main() {
             }
         }
     }
-    cout << prime;
+    cout << prime << "\n";
     return 0;
 }

@@ -11,6 +11,6 @@ int main () {
         a = b;
         b = c + b;
    }
-    cout << sum;
-    return 0;
+   printf("%d\n", sum);
+   return 0;
 }
