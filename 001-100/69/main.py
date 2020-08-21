@@ -15,7 +15,7 @@ def is_prime(n):
         return False
     for i in range(3,int(n**0.5)+1,2):   # only odd numbers
         if n%i==0:
-            return False    
+            return False
 
     return True
 
@@ -31,10 +31,9 @@ def totient_maximum(x):
 
 
 d = 6
-while d < 100000:
+while d < 10000:
     start = time()
     print("For n less than 10^ " + str(d) + ", the number that produces the maximum m/phi(m) is " +
-          str(totient_maximum(10**d)))
-    print(". Time elapsed: " + str(time()-start))
+          str(totient_maximum(10**d)), end = "")
+    print(". \nTime elapsed: " + str(time()-start))
     d += 10000
-print(time()-start)

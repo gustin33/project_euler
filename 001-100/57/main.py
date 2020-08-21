@@ -35,6 +35,6 @@ while d <= 10000:
     start = t()
     print('''For numbers less than {}, the number of fractions which contain
             a numerator with more digits than the denominator is {}.\
-     Time elapsed: {}'''.format(d, number_of_fractions(d), t()-start))
+     Time elapsed: {}\n'''.format(d, number_of_fractions(d), t()-start))
     d += 1000
 

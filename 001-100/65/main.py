@@ -13,7 +13,6 @@ def sum_digits(n):
 def e_pn(n):
     a, b = 1, 2
     for num in range(2, n+1):
-        print(f"b: {b}")
         if num % 3 == 0:
             a, b = b, a + 2*(num//3)*b  # p_3k = 2*k*p_{3k-1} + p_{3k-2}
         else:
