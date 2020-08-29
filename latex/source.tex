@@ -1,0 +1,281 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\title{Solutions to some Project Euler Problems}
+\date{}
+\begin{document}
+
+\maketitle
+\section*{Problem 26}
+\begin{align*}
+    \frac{1}{x} = 0.a_0a_1 \ldots (a_j \ldots a_n)
+\end{align*}
+Where the () indicate the period.\\
+Then we can define:
+\begin{align*}
+    &\alpha_0 = \frac{10}{x},
+    \quad \alpha_n = \floor{\alpha_n} + \frac{\alpha_{n+1}}{10} \\ \\
+    &\alpha_n = \frac{10b_{n-1}}{x} \\ \\
+    &b_{n+1} = (10*b_n) \mod x, \quad b_{-1} = 1
+\end{align*}
+And the $a_n$'s are given by $a_n = \floor{\alpha_n}$\\
+\textbf{Example}:
+Take $x = 7$. Then:
+\begin{align*}
+    &\alpha_0 = \frac{10}{7}, \quad a_0 = 1, \quad b_0 = 3\\\\
+    &\alpha_1 = \frac{30}{7}, \quad a_1 = 4, \quad b_1 = 2\\\\
+    &\alpha_2 = \frac{20}{7}, \quad a_2 = 2, \quad b_2 = 6\\\\
+    &\alpha_3 = \frac{60}{7}, \quad a_3 = 8, \quad b_3 = 4\\\\
+    &\alpha_4 = \frac{40}{7}, \quad a_4 = 5, \quad b_4 = 5\\\\
+    &\alpha_5 = \frac{50}{7}, \quad a_5 = 7, \quad b_5 = 1\\\\
+    &\alpha_6 = \frac{10}{7}=\alpha_0, \quad a_6 = 1=a_0, \quad b_6 = 3=b_0\\
+\end{align*}
+So that $\frac{1}{7} =  0.(142857)$.\\\\
+We also have
+\begin{align*}
+    \frac{1}{10}\alpha_0 = \frac{1}{x} = \frac{1}{10} \bigg(a_0+\frac{\alpha_1}{10} \bigg) &= 0.a_0 + \frac{1}{10^2} \bigg(a_1 + \frac{\alpha_2}{10} \bigg) \\\\
+    &= 0.a_0a_1\ldots a_{n-1} + \frac{\alpha_n}{10^{n+1}}
+\end{align*}
+When $\alpha_n = \alpha_0 = \frac{10}{x}$
+\begin{align*}
+    \frac{1}{x} = 0.a_0a_1\ldots a_{n-1} + \frac{1}{10^n x} \rightarrow \frac{1}{x} = \frac{0.a_0a_1\ldots a_{n-1}}{1-1/10^n}
+\end{align*}
+Since $\frac{1}{1-1/10^n} = \sum_{k \geq 0} \frac{1}{10^{kn}}$. Then
+\begin{align*}
+    \\ \frac{1}{x} &= \frac{0.a_0a_1\ldots a_{n-1}}{1-1/10^n} \\\\
+    &= 0.a_0a_1\ldots a_{n-1} + (0.a_0a_1\ldots a_{n-1}) \times 10^{-n} + \ldots \\\\
+    &= 0.(0.a_0a_1\ldots a_{n-1})
+\end{align*}
+We repeat the code until $b_n = b_j$ for some $j < n$; then the period of $1/x$ is $n-j$.
+\begin{align*}
+    \alpha_{n+1} &= \frac{10b_n}{x} = \frac{10b_j}{x} = \alpha_{j+1} \rightarrow a_{n+1} = a_{j+1} \\\\
+    & \rightarrow \frac{1}{x} = 0.a_0a_1\ldots a_ja_{j+1} \ldots a_{n+1}a_{n+2}\ldots \\\\
+    & \qquad \; \; =0.a_0\ldots a_j(a_{j+1}\ldots a_n)
+\end{align*}
+
+\section*{Problem 38}
+We have $x*1, x*2, \ldots x*n$ for some natural n. We then form the number $x2x3x\ldots nx$ such that the total number of digits in this last number is 9.
+\subsection{Code}
+Let $\Omega$ be the ordered set of all permutations to $1, 2,\ldots 9$. Starting from the last (biggest) element and moving to the first we find numbers in the form $abcdefghi$, we firstly grab a, and check whether $2\times a$ appears in the beginning of the string bcdefghi; otherwise take ab and repeat, until we reach the number abcd.
+For a if 2a is in the list, eliminate it and check whether 3a is in the list if len(3a) $>$ len(abcdefghi)-len(a)-len(2a)
+Same with ab, abc, abcd.
+\section{Problem 39}
+\begin{align*}
+    (a, b, c) / a+b+c = p, a^2+b^2=c^2 \rightarrow (a,b,c) = (3,4,5) \rightarrow p\geq 12
+\end{align*}
+Then
+\begin{align*}
+    a^2 + b^2 &= (p-a-b)^2 \rightarrow 0 = p^2 -2pa-2pb+2ab \\\\
+    b &= \frac{p^2-2pa}{2p-2a} = \frac{p}{2} \frac{p-2a}{p-a}
+\end{align*}
+We check if $b \in \mathbb{N}$.
+$$
+    b > 0 \rightarrow a < \frac{p}{2} \rightarrow 1 \leq a < \frac{p}{2}
+$$
+Also assume a < b < c:
+\begin{align*}
+    a < b = \frac{p}{2} \frac{p-2a}{p-a} &\implies 2ap-2a^2 < p^2-2ap\\\\
+    & 0 < (a-p)^2-\frac{p^2}{2}\\\\
+    & |a-p| > \frac{p}{\sqrt{2}}\\\\
+    & p-a > \frac{p}{\sqrt{2}} \\\\
+    & a < p\bigg(1-\frac{1}{\sqrt{2}} \bigg) < \frac{p}{2}
+\end{align*}
+Hence $1 \leq a < p\bigg(1-\frac{1}{\sqrt{2}} \bigg)$
+\section{Problem 65}
+\begin{align*}
+    &e = [2; 1,2,1, \ldots 1, 2k, 1, \ldots] \rightarrow c_n = \frac{p_n}{q_n}; \quad a_1 = 2, \quad a_{3k} = 2k, \quad a_{3k \pm 1} = 1,\quad  k\geq 1 \\\\
+    &c_1 = \frac{2}{1}, \quad c_0 = \frac{1}{0},\quad  p_n = a_np_{n-1} + p_{n-1}, \quad p_0 = 1, \quad p_1 = 2
+\end{align*}
+Note:
+\begin{align*}
+    &p_{3k} = 2kp_{3k-1} + p_{3k-2}\\
+    &p_{3k\pm 1} = p_{3k \pm 1 -1} + p_{3k \pm 1 -2}
+\end{align*}
+\section*{Problem 64}
+\begin{align*}
+    &\sqrt{m} = a_0+\frac{1}{a_1+} \frac{1}{a_2+} \ldots \frac{1}{a_n+} \frac{1}{a_1+} \frac{1}{a_2+} \ldots \\\\
+    &= [a_0; (a_1,\ldots a_n)]
+\end{align*}
+Now:
+\begin{align*}
+    &b_0  = \sqrt{m}; \quad b_{n+1} = \frac{1}{\{ b_n\}}; \quad b_1 = \frac{1}{m-b_0} = \frac{\sqrt{m} + \floor{\sqrt{m}}}{m-\floor{\sqrt{m}}^2} \\
+    &b_0 = \frac{\sqrt{m}\cdot1+0}{1}.
+\end{align*}
+Where $\{x \} = x - \floor{x}$. And $a_n = \floor*{b_n}$\\\\
+If $b_n = \frac{\sqrt{m} + d_n}{c_n} \rightarrow b_{n+1} = \frac{\sqrt{m} + d_{n+1}}{c_{n+1}}; \quad n \geq 0$
+Now
+\begin{align*}
+    b_{n+1} &= \frac{1}{\frac{\sqrt{m}+d_n}{c_n} - \floor{b_n}} \\
+    &= \frac{c_n(\sqrt{m}+c\floor{b_n}-d_n)}{m-(c*\floor{b_n}-d_n)^2} \\
+    &\rightarrow d_{n+1} = c_n\floor{b_n}-d_n, \quad d_0 = 0, \quad \quad c_{n+1} = \frac{m-d_{n+1}^2}{c_n}, \quad c_0 = 1
+\end{align*}
+\section*{Problem 58}
+Going along the spiral, defining $a_0 = 1$ and $a_n$ to be the next number that is on a diagonal we have:
+\begin{align*}
+    (a_n)_n = (1,\quad 3,5,7,9, \quad 13,17,21,25,\quad 31,37,43,49,\ldots)
+\end{align*}
+Note that numbers 3 to 9 have a common difference of 2, 13 to 25 a difference of 4, 31 to 49 a difference of 6, and so on. Every 1+4*k term the common difference increments by 2.\\
+Notice that
+$$
+    a_n = a_{n-1} + l_{n-1} \rightarrow a_n = a_0 + \sum_{j=1}^n (l_j-1) = 1 + \sum_{j = 1}^n (l_j-1)
+$$
+For $k \leq n \leq k+4; \quad k = 1 \mod 4$ we have $l_n = \frac{k-1}{4}*2+3 = \frac{k+5}{2}$.\\
+And
+$$
+    k = n-(n-1)\mod 4 = 1 + n-1 -(n-1) \mod 4 = 1 + 4*\floor*{\frac{n-1}{4}} = 4\floor*{\frac{n+3}{4}}-3
+$$
+Hence
+\begin{align*}
+    a_n &= 1+\sum_{j = 1}^n (l_j -1) = 1 + \sum_{j = 1}^n \frac{k+3}{2} \\
+    &= 1+2\sum_{j = 1}^n \floor*{\frac{j+3}{4}}
+\end{align*}
+For a square of size $l \times l$, there are
+$$
+    1 + 4\Big(\frac{l-1}{2}\Big) = 2l-1
+$$
+diagonals.\\
+And there are
+$$
+    \sum_{a_n prime} 1; \quad \text{for} \; n \leq 4*\Big(\frac{l-1}{2}\Big) = 2(l-1)
+$$
+prime numbers.
+Note that if $4|n$
+\begin{align*}
+    s_n = \sum_{j = 1}^n \floor*{\frac{j+3}{4}} &= \floor*{\frac{4}{4}} + \floor*{\frac{5}{4}} + \floor*{\frac{6}{4}} + \floor*{\frac{7}{4}} +
+    \floor*{\frac{8}{4}} + \ldots \floor*{\frac{n}{4}} +\floor*{\frac{n+1}{4}} +\floor*{\frac{n+2}{4}} +\floor*{\frac{n+3}{4}}\\
+    &= 1 +1+1+1+2+\ldots +\frac{n}{4}+\frac{n}{4}+\frac{n}{4}+\frac{n}{4}\\
+    &= 4\bigg(1 + 2+ \ldots + \frac{n}{4} \bigg) = 4*  \frac{(n/4) (n/4+1)}{2}
+\end{align*}
+If $4|n-1$
+\begin{align*}
+    s_n =& 1+1+1+1+\ldots + \floor*{\frac{n-1}{4}}+\floor*{\frac{n}{4}}+\floor*{\frac{n+1}{4}}+\floor*{\frac{n+2}{4}}+\floor*{\frac{n+3}{4}} \\
+    &= 4\bigg(1+\ldots \frac{n-1}{4}\bigg) + \frac{n+3}{4} \\
+    &= 4* \frac{((n-1)/4)((n-1)/4+1)}{2} + \frac{n+3}{4}
+\end{align*}
+Similarly if $4|n-2$
+$$
+    s_n = 4\frac{((n-2)/4)((n-2)/4+1)}{2} + 2\frac{n+2}{4}
+$$
+if $4|n-3$
+$$
+    s_n = 4\frac{((n-3)/4)((n-3)/4+1)}{2} + 2\frac{n+1}{4}
+$$
+So in general:
+\begin{align*}
+    s_n &= 4\bigg(1 + \ldots \floor*{\frac{n}{4}}\bigg) + (n\mod 4) \bigg(\floor*{\frac{n}{4}}+1\bigg)\\
+    &= \frac{4}{2} \floor*{\frac{n}{4}} \bigg(\floor*{\frac{n}{4}}+1\bigg) + (n\mod 4) \floor*{\frac{n+4}{4}}\\
+    &= 2 \floor*{\frac{n}{4}} \floor*{\frac{n+4}{4}} + (n\mod 4) \floor*{\frac{n+4}{4}}\\
+    &= \floor*{\frac{n+4}{4}} \bigg( 2*\floor*{\frac{n}{4}}+ (n \mod 4)\bigg) \\
+    &= \bigg(\floor*{\frac{n}{4}}+1\bigg) \bigg( 2*\floor*{\frac{n}{4}}+ (n \mod 4)\bigg) \\
+\end{align*}
+Hence
+$$
+    a_n = 1+2s_n = 1+2\bigg(\floor*{\frac{n}{4}}+1\bigg) \bigg( 2*\floor*{\frac{n}{4}}+ (n \mod 4)\bigg)
+$$
+The percentage of primes for a $l\times l$ square is :
+$$
+    \frac{1}{2l-1} \sum_{a_n prime, 0 \leq n \leq 2(l-1)}
+$$
+\section*{Problem 57}
+\begin{align*}
+    \sqrt{2} = 1 +\frac{1}{2+\frac{1}{2+\ldots}} \rightarrow d_n = 1 + b_n
+\end{align*}
+Let the n-th (approx-1) be $b_n = a_n/c_n$, then:
+\begin{align*}
+    b_{n+1} &= \frac{1}{2+b_n} = \frac{c_n}{a_n+2c_n} = \frac{a_{n+1}}{c_{n+1}}\\
+    &\rightarrow a_{n+1} = c_n; \quad c_{n+1} = a_n + 2c_n
+    \quad  (\text{Note: }c_{n+1}-2c_n-c_{n-1} = 0) \quad c_0 = 1, \quad c_1 = 2
+\end{align*}
+Now $b_n = \frac{a_n}{c_n} = \frac{c_{n-1}}{c_n} \rightarrow d_n = 1 +b_n = \frac{c_n+c_{n-1}}{c_n}$\\
+We look for n's such that $digits(c_n+c_{n-1}) > digits(c_n)$.
+\section{Problem 243}
+\begin{align*}
+    R(d) &= \frac{\phi(d)}{d-1} = \frac{d}{d-1} \prod_{p|d} \bigg(1-\frac{1}{p}\bigg) < \frac{a}{b} < 1\\
+    &\rightarrow bd \prod(p-1) < a(d-1) \prod p = ad\prod p - a\prod p \\
+    &\rightarrow a\prod p < d\Big(a \prod p - b \prod(p-1)\Big) \\
+    & \rightarrow d > \frac{a \prod p}{a \prod p - b\prod (p-1)}
+\end{align*}
+Also since $1 < \frac{d}{d-1} \rightarrow \prod_{p|d} (1 - \frac{1}{p}) < \frac{a}{b}$.
+Or
+\begin{align*}
+    \frac{a}{b} - \prod \bigg(\frac{p-1}{p}\bigg) > 0 \rightarrow &a\prod p > b \prod (p-1) \leftarrow (\text{for the code}) \\
+    & \frac{a}{b} - \prod_{p \leq p_n}\bigg(1 - \frac{1}{p}\bigg) > 0 \leftarrow (\text{(1) in practice})
+\end{align*}
+The least d is the number bigger than $\eta = \ceil*{\frac{a\prod p}{a\prod p - b\prod(p-1)}}$
+which is divisible by $p_1, \ldots ,p_n$ which make (1) true.\\
+\textbf{Example} \\For $\frac{a}{b} = \frac{4}{10}$ we have $\frac{4}{10} - (1-\frac{1}{2})(1-\frac{1}{3}) > 0$. And $\eta = 6 = 2*3$, then $d = 2*2*3= 12$ (next divisor of 2*3).\\
+For $\frac{a}{b} = 0.32 \rightarrow \frac{a}{b} - \prod_{p \leq 5}(1-\frac{1}{p})>0$, and $\eta = \ceil*{\frac{a/b}{a/b-\prod_{p \leq 5}(1 - \frac{1}{p}) }} = 6 = 2*3\rightarrow d = 2*3*5 = 30$ (first divisor of $\prod_{p \leq 5}p$).
+\\For $\frac{a}{b} = \frac{15499}{94744} \rightarrow \frac{a}{b} - \prod_{p \leq 23} (1- \frac{1}{p}) > 0$, and $\eta = 805,994,497$. The least divisor of $\prod_{p \leq 23}(1 - \frac{1}{p})$ is $223,092,870$, its multiples are:
+\begin{align*}
+    \prod p &= 223,092,870 < \eta \\
+    2\prod p &= 446,185,740 < \eta \\
+    3\prod p &= 669,278,610 < \eta \\
+    4\prod p &= 892,371,480 >= \eta \\
+\end{align*}
+So the answer is $4\prod p = 892,371,480$.\\\\
+For the code:\\
+We look for the prime $p_m$ s.t.
+$$
+    \frac{a}{b} - \prod_{p \leq p_m}\bigg(1-\frac{1}{p}\bigg) > 0 \equiv a\prod p - b \prod(p-1) > 0
+$$
+Having found $p_m$, we calculate $\eta = \ceil*{\frac{a \prod p}{a \prod p - b\prod(p-1)}}$ and letting $d_1 = \prod_{p \leq p_m} p, \; d_n = nd_1$, we find the least $d_n$ for which $d_n > \eta \rightarrow n > \frac{\eta}{d_1} \rightarrow n = \ceil{\frac{\eta}{d_1}}$. The answer therefore is: $d_n = d = \ceil{\frac{\eta}{d_1}}d_1, \; d_1 = \prod_{p \leq p_m} p$.
+$$
+    \rightarrow d = \ceil*{\frac{a}{a\prod p - b \prod(p-1)}} \prod p
+$$
+\section*{Problem 120}
+\begin{align*}
+    &r_n(a) = ((a-1)^n+ (a+1)^n) \mod a^2 \\
+    & \rightarrow S_n = (a-1)^n+ (a+1)^n = \sum_{k} \binom{n}{k} (1 +(-1)^k)a^{n-k}\\
+    & \qquad = 2 \sum_k \binom{n}{2k} a^{n-2k} = 2(\binom{n}{0}a^n+\binom{n}{2}a^{n-2}+\ldots)
+\end{align*}
+Hence
+\begin{align*}
+    &S_{2n} = 2(\binom{2n}{0}a^{2n} + \binom{2n}{2}a^{2(n-1)}+\ldots+ \binom{2n}{2n}) \equiv 2 \mod a^2\\
+    &S_{2n+1} = 2( \binom{2n+1}{0} a^{2n+1} +\binom{2n+1}{2} a^{2n-1} +\ldots + \binom{2n+1}{2n}a) \equiv 2 \binom{2n+1}{2n} \mod a^2
+\end{align*}
+So that
+\begin{align*}
+    &r_{2n} = 2\\
+    &r_{2n+1} = 2a(2n+1) \mod a^2 \qquad (1)
+\end{align*}
+We search for the maximum $n$ such that (1) is maximum. Now we have $a | r_n$ and then $\frac{r_{2n+1}}{a} = 2(2n+1) \mod a$. So that
+$$
+    r_{max}(a) = a*max(2(2n+1) \mod a : n \in \mathbb{N})
+$$
+For some $k \in \mathbb{N}$, choose $2(2n+1) = ka-d, d\geq 1$ So that $d+2 = ka-4n$. (0)\\
+\\For there to be some solution $(k, n)$ we must have $(a, 4) | d+2$, since $\eta = (a, 4) \in \{1, 2, 4\}$. For $\eta = 1$ we choose $d = 1$, otherwise $d = 2$.(2)\\\\
+Due to the euclidean algorithm, under conditions (2) we can always find a solution to (0), hence $2(2n+1) \equiv a-d \mod a$, and $r_{max}(a) = a(a-2), 2|a,\quad r_{max}(a) = a(a-1), otw$.\\\\
+So for example if $a = 7$, (0) becomes $3 = 7k-4n$ with solution $k=n=1 \rightarrow r_{max} = 7*6 = 42$\\
+For $a = 504; (504, 4) = 4 \rightarrow 4 = 504k-4n \rightarrow 1 = 126k-n$
+$\rightarrow k = 1, n = 125 \rightarrow 2(2n+1) = 502 \equiv 502 \mod a$. Therefore $r_{max} = 504*502 = 253,008$.
+We also have
+$$
+    \sum_{a = 3}^N r_{max} = \frac{1}{12}(4N^3-3N^2-10N) = \frac{N}{12}(4N^2-3N-10) = \frac{N}{12}(N-2)(4N+5)
+$$
+\section*{Problem 40}
+If one takes the numbers $1$ to $x$ and concatenates them like so:
+$$1234567891011...$$
+The length of this integer is $$S =\sum_{j=1}^n 9j\cdot10^{j-1}+(n+1)(x-10^n+1)$$
+
+Where $n=\floor*{\log_{10} x}$ (i.e. $10^n \leq x < 10^{n+1}$) .
+We require this sum to be at least $10^6$. So for $n = 5$, and taking $S \geq 10^6$.
+We get $x \geq 185186$, with a length of $S \geq 1000005$.
+\section*{Problem 69}
+Since
+$$\phi(n) = n \prod_{p | n} \bigg( 1- \frac{1}{p} \bigg).$$
+Then
+$$\frac{n}{\phi(n)} =\prod_{p | n} \bigg( 1- \frac{1}{p} \bigg)^{-1}. $$
+This ratio is maximum when $\prod_{p|n} 1$ is maximum. For this we choose the first prime numbers whose product does not exceed $n$.
+\section*{Problem 101}
+Using Lagrange's interpolation formula we obtain that given the first $k$ terms of a sequence $U_1,U_2,...,U_k$
+the value of $OP(k,x)$ is given as:
+$$ OP(k,x) = \sum_{j=1}^k \frac{U_j(-1)^{k+j}}{(j-1)!(k-j)!} \cdot \prod_{0 \leq h \leq k, h \neq j}(x-h)$$
+The sum of all the FIT's is given by:
+$$ S = \sum_{t=1}^k OP(k,k+1)$$
+\end{document}
