@@ -1,0 +1,1 @@
+print(sum([max(2*a*n % a**2 for n in range(a)) for a in range(3, 1000+1)]))
