@@ -15,16 +15,19 @@ abc = list("abcdefghijklmnopqrstuvwxyz")
 
 with open("./0059_cipher.txt", "r") as file:
     ciphered_text = [int(code) for code in file.read().split(",")]
-    for a in abc:
-        for b in abc:
-            for c in abc:
-                key = a+b+c
-                unciphered_text = uncipher_text(key, ciphered_text)
-                transformed_text = transform_text(unciphered_text)
-                if all(word in transformed_text for word in ["the", "and", "I", "or", "to", "have"]):
-                    print(f"key: {key}")
-                    print(transformed_text)
-                    print("Solution: ", sum(unciphered_text))
-                    break
+    try:
+        for a in abc:
+            for b in abc:
+                for c in abc:
+                    key = a+b+c
+                    unciphered_text = uncipher_text(key, ciphered_text)
+                    transformed_text = transform_text(unciphered_text)
+                    if all(word in transformed_text for word in ["the", "and", "I", "or", "to", "have"]):
+                        print(f"key: {key}")
+                        print(transformed_text)
+                        print("Solution: ", sum(unciphered_text))
+                        raise Exception
+    except Exception:
+        pass
 
-
+print("Time elapsed: ", round(time()-start, 2))
