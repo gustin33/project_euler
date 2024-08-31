@@ -4,6 +4,9 @@ https://projecteuler.net/problem=59
 key is a triple with values ranging from 97-122
 '''
 import itertools
+from time import time
+
+start = time()
 
 transform_text = lambda ciphered_text: "".join(chr(code) for code in ciphered_text)
 uncipher_text = lambda key, ciphered_text: list(a^b for a, b in zip(itertools.cycle([ord(k) for k in list(key)]), ciphered_text))
