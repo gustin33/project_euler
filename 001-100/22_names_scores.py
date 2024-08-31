@@ -1,6 +1,6 @@
 from time import time
 start = time()
-file = open("p022_names.txt", "r").read()
+file = open("22_input.txt", "r").read()
 names = [line.strip("\"") for line in file.split(",")]
 names.sort()
 

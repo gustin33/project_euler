@@ -1,1 +1,0 @@
-cat numbers.txt | paste -sd+ | bc -l| awk '{print substr($0, 0, 11)}'

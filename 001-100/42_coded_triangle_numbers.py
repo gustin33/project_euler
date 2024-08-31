@@ -1,6 +1,6 @@
 from time import time
 start = time()
-file = open('p042_words.txt', 'r').read()
+file = open('42_input.txt', 'r').read()
 print(file.split(','))
 words = [line.strip('"') for line in file.split(',')]
 print(words)

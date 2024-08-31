@@ -1,6 +1,6 @@
 from time import time
 start = time()
-file = open("p018_triangle.txt", "r").read()
+file = open("18_input.txt", "r").read()
 matrix = [item.split() for item in file.split("\n")]
 grid = [list(map(int, j))for j in matrix]
 

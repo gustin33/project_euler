@@ -13,7 +13,7 @@ uncipher_text = lambda key, ciphered_text: list(a^b for a, b in zip(itertools.cy
 
 abc = list("abcdefghijklmnopqrstuvwxyz")
 
-with open("./0059_cipher.txt", "r") as file:
+with open("./59_cipher.txt", "r") as file:
     ciphered_text = [int(code) for code in file.read().split(",")]
     try:
         for a in abc:

@@ -2,7 +2,7 @@ from time import time
 from operator import mul
 from functools import reduce
 start = time()
-f = open('p011_grid.txt', 'r').read()
+f = open('11_grid.txt', 'r').read()
 matrix = [item.split() for item in f.split("\n")]
 list1 = [list(map(int, j)) for j in matrix]
 

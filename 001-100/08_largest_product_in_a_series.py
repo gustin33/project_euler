@@ -16,7 +16,7 @@ def largest_product(numbers, adjacent):
         begin += 1
     return maximum_number
 
-file = open('input.txt')
+file = open("./08_input.txt")
 string_of_numbers = ''.join([line.strip('\n') for line in file.readlines()])
 print('The largest product for {} adjacent numbers is: {}'
       .format(4, largest_product(string_of_numbers, 4)))

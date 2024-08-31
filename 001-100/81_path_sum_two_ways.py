@@ -1,4 +1,4 @@
-file = open("p081_matrix.txt", "r").readlines()
+file = open("81_matrix.txt", "r").readlines()
 matrix = [line.strip('\n') for line in file]
 matrix = [list(map(int, line.split(','))) for line in matrix]
 
