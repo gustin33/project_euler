@@ -2,3 +2,4 @@
 *.exe
 **/main
 **/a.out
+.venv
