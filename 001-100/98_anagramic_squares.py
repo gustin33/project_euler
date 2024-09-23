@@ -1,57 +1,53 @@
-import itertools
-from collections import defaultdict
-from tqdm import tqdm
+def wordchecker(word, number):
+    word_fingerprint = []
+    for x in word:
+        word_fingerprint.append(word.count(x))
+    
+    number_fingerprint = []
+    for x in number:
+        number_fingerprint.append(number.count(x))
+        
+    return word_fingerprint == number_fingerprint
 
-def load_words(file_path):
-    with open(file_path, 'r') as file:
-        words = set(word.strip().upper() for word in file)
-    return words
+def compute(words):
+    candidates = []
+    
+    for x in range(len(words)):
+        for y in range(x+1, len(words)):
+            if sorted(list(words[x])) == sorted(list(words[y])):
+                candidates.append((len(words[x]), (words[x], words[y])))
+    
+    candidates = sorted(candidates, reverse=True)
+    possiblesquares = [str(x**2) for x in range(1, 31623)]
+    
+    max_square = 0
+    for x in candidates:
+        for y in possiblesquares:
+            length = len(y)
+            if length > x[0]:
+                break
+            
+            if length == x[0]:
+                word = x[1][0]
+                if wordchecker(word, y):
+                    temp_dict = {}
+                    for z in range(len(word)):
+                        if word[z] not in temp_dict:
+                            temp_dict[word[z]] = y[z]
+                    
+                    number = ""
+                    for a in x[1][1]:
+                        number += temp_dict[a]
+                    
+                    if number in possiblesquares:
+                        max_square = max(max_square, int(y), int(number))
 
-def generate_square_numbers(max_length):
-    square_numbers = []
-    limit = 10 ** max_length
-    i = 1
-    while i * i < limit:
-        square_numbers.append(i * i)
-        i += 1
-    return square_numbers
+    return max_square
 
-def get_square_number_set(square_numbers):
-    return set(square_numbers)
+# Read words from 98_input.txt
+with open('98_input.txt', 'r') as file:
+    words = [word.strip().strip('"') for word in file.readline().split(',')]
 
-def convert_word_to_number(word):
-    # Convert each character to its position in the alphabet (1-9 for A-I, 0 for J-Z)
-    return int(''.join(str(ord(char) - ord('A') + 1) for char in word))
-
-def find_largest_square_anagram(words):
-    max_length = max(len(word) for word in words)
-    square_numbers = generate_square_numbers(max_length)
-    square_number_set = get_square_number_set(square_numbers)
-
-    # Create a dictionary for sorted letters to word list
-    sorted_word_map = defaultdict(set)
-    for word in words:
-        sorted_word = ''.join(sorted(word))
-        sorted_word_map[sorted_word].add(word)
-
-    largest_square = 0
-
-    # Use tqdm to add a progress bar
-    for word1 in tqdm(words, desc="Processing words"):
-        sorted_word1 = ''.join(sorted(word1))
-        for word2 in sorted_word_map[sorted_word1]:
-            if word1 != word2:  # Ensure word1 and word2 are different
-                num1 = convert_word_to_number(word1)
-                num2 = convert_word_to_number(word2)
-
-                if num1 in square_number_set and num2 in square_number_set:
-                    largest_square = max(largest_square, num1, num2)
-
-    return largest_square
-
-# Load words and execute the function
-file_path = '98_input.txt'
-words = load_words(file_path)
-
-largest_square = find_largest_square_anagram(words)
-print(f"Largest square number formed by any member of a square anagram word pair: {largest_square}")
+# Compute the maximum square number formed by anagram pairs
+result = compute(words)
+print("Largest square formed by any member of an anagram pair:", result)
